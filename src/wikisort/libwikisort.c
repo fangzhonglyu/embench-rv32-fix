@@ -17,6 +17,13 @@
 #include <string.h>
 #include "support.h"
 
+
+#include "beebsc.c"
+#include "main.c"
+#include "libc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
+
 /* This scale factor will be changed to equalise the runtime of the
    benchmarks. */
 #define LOCAL_SCALE_FACTOR 1
@@ -25,7 +32,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include <string.h>
+// #include <string.h>
 #include <math.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -384,7 +391,7 @@ WikiSort (Test array[], const long size, const Comparison compare)
   /* then merge sort the higher levels, which can be 32-63, 64-127, 128-255, etc. */
   for (merge_size = 16; merge_size < power_of_two; merge_size += merge_size)
     {
-      long block_size = sqrt (decimal_step);
+      long block_size = long_sqrt (decimal_step);
       long buffer_size = decimal_step / block_size + 1;
 
       /* as an optimization, we really only need to pull out an internal buffer once for each level of merges */
@@ -902,13 +909,13 @@ TestingRandom (long index, long total)
 long
 TestingMostlyDescending (long index, long total)
 {
-  return total - index + rand_beebs () * 1.0 / RAND_MAX * 5 - 2.5;
+  return total - index + (rand_beebs() % 5) - 2;
 }
 
 long
 TestingMostlyAscending (long index, long total)
 {
-  return index + rand_beebs () * 1.0 / RAND_MAX * 5 - 2.5;
+  return index + (rand_beebs() % 5) - 2;
 }
 
 long
@@ -932,7 +939,7 @@ TestingEqual (long index, long total)
 long
 TestingJittered (long index, long total)
 {
-  return (rand_beebs () * 1.0 / RAND_MAX <= 0.9) ? index : (index - 2);
+  return (rand_beebs () % 10 < 9) ? index : (index - 2);
 }
 
 long

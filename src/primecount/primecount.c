@@ -97,6 +97,13 @@
 #include <time.h>
 #include <stdint.h>
 
+
+#include "beebsc.c"
+#include "main.c"
+#include "libc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
+
 /* We reduced the quantity of prime numbers to find in order to have an
  * execution time as close as possible to 4000 ms for the baseline */
 #define SZ 42

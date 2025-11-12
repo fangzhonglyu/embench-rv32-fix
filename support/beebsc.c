@@ -17,7 +17,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <assert.h>
 #include "beebsc.h"
 
 /* Seed for the random number generator */
@@ -29,6 +28,28 @@ static long int seed = 0;
 static void *heap_ptr = NULL;
 static void *heap_end = NULL;
 static size_t heap_requested = 0;
+
+long long_sqrt(long x)
+{
+  long res = 0;
+  long bit = 1L << 30; /* The second-to-top bit is set */
+
+  /* "bit" starts at the highest power of four <= the argument. */
+  while (bit > x)
+    bit >>= 2;
+
+  while (bit != 0)
+    {
+      if (x >= res + bit)
+        {
+          x -= res + bit;
+          res += bit << 1;
+        }
+      res >>= 1;
+      bit >>= 2;
+    }
+  return res;
+}
 
 
 /* Yield a sequence of random numbers in the range [0, 2^15-1].
@@ -62,7 +83,7 @@ srand_beebs (unsigned int new_seed)
 void
 init_heap_beebs (void *heap, size_t heap_size)
 {
-  assert(heap_size % sizeof(void *) == 0);  /* see #138 */
+  // assert(heap_size % sizeof(void *) == 0);  /* see #138 */
   heap_ptr = (void *) heap;
   heap_end = (void *) ((char *) heap_ptr + heap_size);
   heap_requested = 0;

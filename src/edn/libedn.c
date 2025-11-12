@@ -32,8 +32,14 @@
  * JG 2006-01-27: Removed code in codebook
  */
 
-#include <string.h>
+
 #include "support.h"
+
+#include "libc.c"
+#include "main.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
+
 
 /* This scale factor will be changed to equalise the runtime of the
    benchmarks. */

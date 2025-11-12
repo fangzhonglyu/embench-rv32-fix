@@ -7,8 +7,15 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+// #include <string.h>
 #include <stdint.h>
+
+
+#include "beebsc.c"
+#include "main.c"
+#include "libc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
 
 #include "support.h"
 

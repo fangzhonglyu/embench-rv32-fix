@@ -28,6 +28,11 @@
 #pragma warn -cln
 #endif
 
+#include "beebsc.c"
+#include "main.c"
+#include "libc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
 /**********************************************************************\
   |* Demonstration program to compute the 32-bit CRC used as the frame  *|
   |* check sequence in ADCCP (ANSI X3.66, also known as FIPS PUB 71     *|

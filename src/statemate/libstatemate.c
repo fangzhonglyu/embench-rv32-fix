@@ -44,6 +44,13 @@
 #include <string.h>
 #include "support.h"
 
+
+#include "beebsc.c"
+#include "main.c"
+#include "libc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
+
 /* This scale factor will be changed to equalise the runtime of the
    benchmarks. */
 #define LOCAL_SCALE_FACTOR 1964

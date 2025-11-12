@@ -2,6 +2,9 @@
     "files.associations": {
         "math.h": "c",
         "support.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "string.h": "c",
+        "assert.h": "c",
+        "stdint.h": "c"
     }
 }

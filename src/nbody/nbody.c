@@ -59,6 +59,12 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include "libc.c"
+#include "beebsc.c"
+#include "main.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+
+
 #include "support.h"
 
 #define LOCAL_SCALE_FACTOR 1

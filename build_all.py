@@ -450,6 +450,7 @@ def compile_file(f_root, srcdir, bindir, suffix='.c'):
     arglist.extend(gp['cflags'])
     arglist.extend(gp['cc_output_pattern'].format('{root}.o'.format(root=f_root)).split())
     arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
+    arglist.extend(['-static','-fno-asynchronous-unwind-tables','-ffreestanding','-nostdlib','-fno-builtin','-fno-dwarf2-cfi-asm','-mno-relax','-lm','-fno-builtin-memset','-fno-builtin-memcpy'])
     arglist.append('-c')
     arglist.append('-O3')
 
@@ -511,9 +512,15 @@ def compile_file_asm(f_root, srcdir, bindir, suffix='.c'):
 
     # Construct the argument list
     arglist = [gp["cc"]]
+    arglist.extend(['-static','-fno-asynchronous-unwind-tables','-ffreestanding','-nostdlib','-fno-builtin','-fno-dwarf2-cfi-asm','-mno-relax','-fno-builtin-memset','-fno-builtin-memcpy'])
+    arglist.extend(['-fno-tree-loop-distribute-patterns','-nostdlib','-nostartfiles','-fno-optimize-sibling-calls'])
     arglist.extend(gp['cflags'])
     arglist.extend(gp['cc_output_pattern'].format('{root}.s'.format(root=f_root)).split())
     arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
+    # arglist.append('/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/support/beebsc.c')
+    # arglist.append('/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/support/main.c')
+    # arglist.append('/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/support/board.c')
+    # arglist.append('/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/support/chip.c')
     arglist.append('-S')
     arglist.append('-O3')
 
@@ -668,38 +675,38 @@ def create_link_binlist(abs_bd):
             binlist.extend(gp['ld_input_pattern'].format(binf).split())
 
 
-    # Add arch, chip and board binaries
-    for dirtype in ['arch', 'chip', 'board']:
-        # Build directory
-        bindir = gp['bd_{dirtype}dir'.format(dirtype=dirtype)]
-        # List of files in the build directory in alphabetical order
-        filelist = sorted(os.listdir(bindir), key=lambda objf: objf)
-        # Add every object file
-        for filename in filelist:
-            root, ext = os.path.splitext(filename)
-            binf = os.path.join(bindir, filename)
-            if (os.path.isfile(binf) and (ext == '.o')):
-                binlist.extend(
-                    gp['ld_input_pattern'].format(binf).split()
-                )
+    # # Add arch, chip and board binaries
+    # for dirtype in ['arch', 'chip', 'board']:
+    #     # Build directory
+    #     bindir = gp['bd_{dirtype}dir'.format(dirtype=dirtype)]
+    #     # List of files in the build directory in alphabetical order
+    #     filelist = sorted(os.listdir(bindir), key=lambda objf: objf)
+    #     # Add every object file
+    #     for filename in filelist:
+    #         root, ext = os.path.splitext(filename)
+    #         binf = os.path.join(bindir, filename)
+    #         if (os.path.isfile(binf) and (ext == '.o')):
+    #             binlist.extend(
+    #                 gp['ld_input_pattern'].format(binf).split()
+    #             )
 
-    # Add generic support
-    for supp in ['main.o', 'beebsc.o']:
-        binf = os.path.join(gp['bd_supportdir'], supp)
-        if os.path.isfile(binf):
-            binlist.extend(gp['ld_input_pattern'].format(binf).split())
-        else:
-            log.warning('Warning: Unable to find support library {binf}'.format(binf=binf))
-            return []
+    # # Add generic support
+    # for supp in ['main.o', 'beebsc.o']:
+    #     binf = os.path.join(gp['bd_supportdir'], supp)
+    #     if os.path.isfile(binf):
+    #         binlist.extend(gp['ld_input_pattern'].format(binf).split())
+    #     else:
+    #         log.warning('Warning: Unable to find support library {binf}'.format(binf=binf))
+    #         return []
 
-    # Add dummy binaries. These must be sorted in alphabetical order
-    for dlib in sorted(gp['dummy_libs'], key=lambda lib: lib):
-        binf = os.path.join(gp['bd_supportdir'], 'dummy-{dlib}.o'.format(dlib=dlib))
-        if os.path.isfile(binf):
-            binlist.extend(gp['ld_input_pattern'].format(binf).split())
-        else:
-            log.warning('Warning: Unable to find dummy library {binf}'.format(binf=binf))
-            return []
+    # # Add dummy binaries. These must be sorted in alphabetical order
+    # for dlib in sorted(gp['dummy_libs'], key=lambda lib: lib):
+    #     binf = os.path.join(gp['bd_supportdir'], 'dummy-{dlib}.o'.format(dlib=dlib))
+    #     if os.path.isfile(binf):
+    #         binlist.extend(gp['ld_input_pattern'].format(binf).split())
+    #     else:
+    #         log.warning('Warning: Unable to find dummy library {binf}'.format(binf=binf))
+    #         return []
 
     return binlist
 

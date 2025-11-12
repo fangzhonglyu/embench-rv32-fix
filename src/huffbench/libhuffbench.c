@@ -41,7 +41,7 @@
 
 */
 
-#include <string.h>
+// #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
@@ -49,6 +49,11 @@
 #include <math.h>
 
 #include "support.h"
+
+#include "main.c"
+#include "beebsc.c"
+#include "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c"
+#include "libc.c"
 
 /* This scale factor will be changed to equalise the runtime of the
    benchmarks. */
