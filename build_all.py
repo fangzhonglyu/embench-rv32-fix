@@ -451,6 +451,7 @@ def compile_file(f_root, srcdir, bindir, suffix='.c'):
     arglist.extend(gp['cc_output_pattern'].format('{root}.o'.format(root=f_root)).split())
     arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
     arglist.append('-c')
+    arglist.append('-O3')
 
     # Run the compilation, but only if the source file is newer than the
     # binary.
@@ -514,6 +515,7 @@ def compile_file_asm(f_root, srcdir, bindir, suffix='.c'):
     arglist.extend(gp['cc_output_pattern'].format('{root}.s'.format(root=f_root)).split())
     arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
     arglist.append('-S')
+    arglist.append('-O3')
 
     # Run the compilation, but only if the source file is newer than the
     # binary.
