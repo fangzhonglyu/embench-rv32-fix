@@ -450,6 +450,70 @@ def compile_file(f_root, srcdir, bindir, suffix='.c'):
     arglist.extend(gp['cflags'])
     arglist.extend(gp['cc_output_pattern'].format('{root}.o'.format(root=f_root)).split())
     arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
+    arglist.append('-c')
+
+    # Run the compilation, but only if the source file is newer than the
+    # binary.
+    succeeded = True
+    res = None
+
+    if not os.path.isfile(abs_bin) or (
+            os.path.getmtime(abs_src) > os.path.getmtime(abs_bin)
+    ):
+        if gp['verbose']:
+            log.debug('Compiling in directory {bin}'.format(bin=bindir))
+            log.debug(arglist_to_str(arglist))
+
+        try:
+            res = subprocess.run(
+                arglist,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                cwd=bindir,
+                timeout=gp['timeout'],
+            )
+            if res.returncode != 0:
+                log.warning(
+                    'Warning: Compilation of {root}{suff} from source directory {src} to binary directory {bin} failed'
+                        .format(root=f_root, suff=suffix, src=srcdir, bin=bindir)
+                )
+                succeeded = False
+        except subprocess.TimeoutExpired:
+            log.warning(
+                'Warning: Compilation of {root}{suff} from source directory {src} to binary directory {bin} timed out'
+                    .format(root=f_root, suff=suffix, src=srcdir, bin=bindir)
+            )
+            succeeded = False
+
+        if not succeeded:
+            log.debug('Command was:')
+            log.debug(arglist_to_str(arglist))
+
+            log.debug(res.stdout.decode('utf-8'))
+            log.debug(res.stderr.decode('utf-8'))
+
+    return succeeded
+
+
+def compile_file_asm(f_root, srcdir, bindir, suffix='.c'):
+    """Compile a single C or assembler file, with the given file root, "f_root",
+       suffix "suffix", from the source directory, "srcdir", in to the bin
+       directory, "bindir" using the general preprocessor and C compilation
+       flags.
+
+       Return True if the compilation success, False if it fails. Log
+       everything in the event of failure
+
+    """
+    abs_src = os.path.join(srcdir, '{root}{suff}'.format(root=f_root, suff=suffix))
+    abs_bin = os.path.join(bindir, '{root}.s'.format(root=f_root))
+
+    # Construct the argument list
+    arglist = [gp["cc"]]
+    arglist.extend(gp['cflags'])
+    arglist.extend(gp['cc_output_pattern'].format('{root}.s'.format(root=f_root)).split())
+    arglist.extend(gp['cc_input_pattern'].format(abs_src).split())
+    arglist.append('-S')
 
     # Run the compilation, but only if the source file is newer than the
     # binary.
@@ -515,6 +579,7 @@ def compile_benchmark(bench):
     for filename in os.listdir(abs_src_b):
         f_root, ext = os.path.splitext(filename)
         if ext == '.c':
+            succeeded &= compile_file_asm(f_root, abs_src_b, abs_bd_b)
             succeeded &= compile_file(f_root, abs_src_b, abs_bd_b)
 
     return succeeded
@@ -537,12 +602,17 @@ def compile_support():
             return False
 
     # Compile each general support file in the benchmark
+    succeeded &= compile_file_asm('beebsc', gp['supportdir'], gp['bd_supportdir'])
     succeeded &= compile_file('beebsc', gp['supportdir'], gp['bd_supportdir'])
+    succeeded &= compile_file_asm('main', gp['supportdir'], gp['bd_supportdir'])
     succeeded &= compile_file('main', gp['supportdir'], gp['bd_supportdir'])
 
     # Compile dummy files that are needed
     for dlib in gp['dummy_libs']:
         succeeded &= compile_file(
+            'dummy-' + dlib, gp['supportdir'], gp['bd_supportdir']
+        )
+        succeeded &= compile_file_asm(
             'dummy-' + dlib, gp['supportdir'], gp['bd_supportdir']
         )
 
@@ -571,6 +641,7 @@ def compile_support():
                         return False
 
                 succeeded &= compile_file(root, dirname, builddir, suffix=ext)
+                succeeded &= compile_file_asm(root, dirname, builddir, suffix=ext)
 
     return succeeded
 
@@ -663,6 +734,7 @@ def link_benchmark(bench):
     if not binlist:
         succeeded = False
     arglist = create_link_arglist(bench, binlist)
+    arglist.append('-lm')
 
     # Run the link
     if gp['verbose']:

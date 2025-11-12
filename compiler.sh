@@ -1,0 +1,1 @@
+python build_all.py --arch riscv32 --board ri5cyverilator
