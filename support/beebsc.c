@@ -16,8 +16,9 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <string.h>
 #include "beebsc.h"
+
+#include "libc.c"
 
 /* Seed for the random number generator */
 
@@ -29,7 +30,7 @@ static void *heap_ptr = NULL;
 static void *heap_end = NULL;
 static size_t heap_requested = 0;
 
-long long_sqrt(long x)
+static long long_sqrt(long x)
 {
   long res = 0;
   long bit = 1L << 30; /* The second-to-top bit is set */
@@ -60,7 +61,7 @@ long long_sqrt(long x)
    For BEEBS this gets round different operating systems using different
    multipliers and offsets and RAND_MAX variations. */
 
-int
+static int
 rand_beebs (void)
 {
   seed = (seed * 1103515245L + 12345) & ((1UL << 31) - 1);

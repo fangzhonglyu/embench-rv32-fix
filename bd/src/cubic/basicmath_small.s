@@ -2101,251 +2101,6 @@ benchmark_body.isra.0:
 	ret
 	.size	benchmark_body.isra.0, .-benchmark_body.isra.0
 	.align	2
-	.globl	memset
-	.type	memset, @function
-memset:
-	beq	a2,zero,.L64
-	addi	a5,a2,-1
-	li	a4,5
-	andi	a1,a1,0xff
-	bleu	a5,a4,.L60
-	neg	a4,a0
-	andi	a5,a4,3
-	li	a6,0
-	beq	a5,zero,.L54
-	sb	a1,0(a0)
-	andi	a4,a4,2
-	li	a6,1
-	beq	a4,zero,.L54
-	sb	a1,1(a0)
-	li	a4,3
-	li	a6,2
-	bne	a5,a4,.L54
-	sb	a1,2(a0)
-	mv	a6,a5
-.L54:
-	slli	a4,a1,8
-	slli	a3,a1,16
-	sub	t1,a2,a5
-	or	a4,a1,a4
-	or	a4,a4,a3
-	add	a5,a0,a5
-	slli	a3,a1,24
-	andi	a7,t1,-4
-	or	a4,a4,a3
-	add	a3,a5,a7
-.L56:
-	sw	a4,0(a5)
-	addi	a5,a5,4
-	bne	a5,a3,.L56
-	add	a5,a6,a7
-	beq	t1,a7,.L64
-.L53:
-	add	a4,a0,a5
-	sb	a1,0(a4)
-	addi	a4,a5,1
-	bleu	a2,a4,.L64
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,2
-	bleu	a2,a4,.L64
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,3
-	bleu	a2,a4,.L64
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a4,a5,4
-	bleu	a2,a4,.L64
-	add	a4,a0,a4
-	sb	a1,0(a4)
-	addi	a5,a5,5
-	bleu	a2,a5,.L64
-	add	a5,a0,a5
-	sb	a1,0(a5)
-.L64:
-	ret
-.L60:
-	li	a5,0
-	j	.L53
-	.size	memset, .-memset
-	.align	2
-	.globl	memcpy
-	.type	memcpy, @function
-memcpy:
-	beq	a2,zero,.L69
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L70
-	or	a3,a0,a1
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L70
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L70
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L71:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L71
-	beq	a2,a7,.L69
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L69
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L69
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L70:
-	add	a2,a1,a2
-	mv	a5,a0
-.L73:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L73
-.L69:
-	ret
-	.size	memcpy, .-memcpy
-	.align	2
-	.globl	memcmp
-	.type	memcmp, @function
-memcmp:
-	beq	a2,zero,.L90
-	add	a2,a0,a2
-	j	.L89
-.L88:
-	beq	a0,a2,.L90
-.L89:
-	lbu	a5,0(a0)
-	lbu	a4,0(a1)
-	addi	a0,a0,1
-	addi	a1,a1,1
-	beq	a5,a4,.L88
-	sub	a0,a5,a4
-	ret
-.L90:
-	li	a0,0
-	ret
-	.size	memcmp, .-memcmp
-	.align	2
-	.globl	memmove
-	.type	memmove, @function
-memmove:
-	bgeu	a0,a1,.L93
-	beq	a2,zero,.L94
-	addi	a5,a2,-1
-	li	a4,6
-	bleu	a5,a4,.L95
-	or	a3,a1,a0
-	andi	a3,a3,3
-	mv	a4,a0
-	mv	a5,a1
-	bne	a3,zero,.L95
-	sub	a3,a0,a1
-	addi	a3,a3,-1
-	sltiu	a3,a3,3
-	bne	a3,zero,.L95
-	andi	a7,a2,-4
-	add	a6,a1,a7
-.L96:
-	lw	a3,0(a5)
-	addi	a5,a5,4
-	addi	a4,a4,4
-	sw	a3,-4(a4)
-	bne	a6,a5,.L96
-	beq	a2,a7,.L94
-	lbu	a3,0(a6)
-	add	a4,a0,a7
-	addi	a5,a7,1
-	sb	a3,0(a4)
-	bleu	a2,a5,.L94
-	add	a4,a1,a5
-	lbu	a4,0(a4)
-	add	a5,a0,a5
-	addi	a7,a7,2
-	sb	a4,0(a5)
-	bleu	a2,a7,.L94
-	add	a1,a1,a7
-	lbu	a5,0(a1)
-	add	a7,a0,a7
-	sb	a5,0(a7)
-	ret
-.L93:
-	bgtu	a0,a1,.L116
-.L94:
-	ret
-.L116:
-	beq	a2,zero,.L94
-	addi	a2,a2,-1
-	add	a5,a1,a2
-	lbu	a4,0(a5)
-	add	a5,a0,a2
-	sb	a4,0(a5)
-	j	.L116
-.L95:
-	add	a2,a1,a2
-	mv	a5,a0
-.L98:
-	lbu	a4,0(a1)
-	addi	a1,a1,1
-	addi	a5,a5,1
-	sb	a4,-1(a5)
-	bne	a1,a2,.L98
-	ret
-	.size	memmove, .-memmove
-	.align	2
-	.globl	strlen
-	.type	strlen, @function
-strlen:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L117
-	li	a5,0
-.L119:
-	addi	a5,a5,1
-	add	a4,a0,a5
-	lbu	a4,0(a4)
-	bne	a4,zero,.L119
-.L117:
-	mv	a0,a5
-	ret
-	.size	strlen, .-strlen
-	.align	2
-	.globl	strchr
-	.type	strchr, @function
-strchr:
-	lbu	a5,0(a0)
-	beq	a5,zero,.L123
-	andi	a4,a1,0xff
-.L125:
-	beq	a4,a5,.L122
-	lbu	a5,1(a0)
-	addi	a0,a0,1
-	bne	a5,zero,.L125
-.L123:
-	seqz	a1,a1
-	neg	a1,a1
-	and	a0,a0,a1
-.L122:
-	ret
-	.size	strchr, .-strchr
-	.align	2
 	.globl	SolveCubic
 	.type	SolveCubic, @function
 SolveCubic:
@@ -2716,7 +2471,7 @@ SolveCubic:
 	sw	a0,24(sp)
 	sw	a1,28(sp)
 	call	__ledf2
-	ble	a0,zero,.L138
+	ble	a0,zero,.L59
 	lw	a4,304(sp)
 	lw	a0,24(sp)
 	lw	a1,28(sp)
@@ -2771,10 +2526,10 @@ SolveCubic:
 	sw	zero,220(sp)
 	mv	s0,s6
 	call	__lttf2
-	blt	a0,zero,.L134
+	blt	a0,zero,.L55
 	li	s0,-2147483648
 	xor	s0,s0,s6
-.L134:
+.L55:
 	lui	a5,%hi(.LC5)
 	lw	a2,%lo(.LC5)(a5)
 	lw	a3,%lo(.LC5+4)(a5)
@@ -2789,7 +2544,7 @@ SolveCubic:
 	lw	a5,308(sp)
 	sw	a0,0(a5)
 	sw	a1,4(a5)
-.L130:
+.L51:
 	lw	ra,300(sp)
 	lw	s0,296(sp)
 	lw	s1,292(sp)
@@ -2805,7 +2560,7 @@ SolveCubic:
 	lw	s11,252(sp)
 	addi	sp,sp,304
 	jr	ra
-.L138:
+.L59:
 	lw	a4,304(sp)
 	li	a5,3
 	sw	s5,224(sp)
@@ -3047,39 +2802,24 @@ SolveCubic:
 	lw	a5,308(sp)
 	sw	a0,16(a5)
 	sw	a1,20(a5)
-	j	.L130
+	j	.L51
 	.size	SolveCubic, .-SolveCubic
 	.align	2
 	.globl	initialise_board
 	.type	initialise_board, @function
 initialise_board:
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	initialise_board, .-initialise_board
 	.align	2
 	.globl	start_trigger
 	.type	start_trigger, @function
 start_trigger:
- #APP
-# 21 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	start_trigger, .-start_trigger
 	.align	2
 	.globl	stop_trigger
 	.type	stop_trigger, @function
 stop_trigger:
- #APP
-# 27 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	ret
 	.size	stop_trigger, .-stop_trigger
 	.align	2
@@ -3089,10 +2829,10 @@ verify_benchmark:
 	lui	a5,%hi(soln_cnt0)
 	lw	a4,%lo(soln_cnt0)(a5)
 	li	a5,3
-	beq	a4,a5,.L143
+	beq	a4,a5,.L64
 	li	a0,0
 	ret
-.L143:
+.L64:
 	addi	sp,sp,-16
 	lui	a5,%hi(.LANCHOR0)
 	sw	s2,0(sp)
@@ -3115,17 +2855,17 @@ verify_benchmark:
 	mv	s0,a5
 	mv	s1,a6
 	call	__ltdf2
-	blt	a0,zero,.L156
-.L145:
+	blt	a0,zero,.L77
+.L66:
 	li	a0,0
-.L142:
+.L63:
 	lw	ra,12(sp)
 	lw	s0,8(sp)
 	lw	s1,4(sp)
 	lw	s2,0(sp)
 	addi	sp,sp,16
 	jr	ra
-.L156:
+.L77:
 	lui	a5,%hi(.LC25)
 	lw	a2,8(s2)
 	lw	a3,12(s2)
@@ -3136,7 +2876,7 @@ verify_benchmark:
 	mv	a2,s0
 	mv	a3,s1
 	call	__ltdf2
-	bge	a0,zero,.L145
+	bge	a0,zero,.L66
 	lui	a5,%hi(.LC26)
 	lw	a2,16(s2)
 	lw	a3,20(s2)
@@ -3147,12 +2887,12 @@ verify_benchmark:
 	mv	a2,s0
 	mv	a3,s1
 	call	__ltdf2
-	bge	a0,zero,.L145
+	bge	a0,zero,.L66
 	lui	a4,%hi(soln_cnt1)
 	lw	a3,%lo(soln_cnt1)(a4)
 	li	a4,1
 	lui	a5,%hi(.LC26)
-	bne	a3,a4,.L145
+	bne	a3,a4,.L66
 	lui	a4,%hi(res1)
 	lw	a2,%lo(res1)(a4)
 	lw	a3,%lo(res1+4)(a4)
@@ -3164,7 +2904,7 @@ verify_benchmark:
 	mv	a3,s1
 	call	__ltdf2
 	srli	a0,a0,31
-	j	.L142
+	j	.L63
 	.size	verify_benchmark, .-verify_benchmark
 	.align	2
 	.globl	initialise_benchmark
@@ -3201,18 +2941,11 @@ benchmark:
 	.type	main, @function
 main:
 	addi	sp,sp,-32
-	sw	ra,28(sp)
- #APP
-# 15 "/home/soxehli/work/egraph_isa_compiler_codesign/embench-iot/config/riscv32/boards/ri5cyverilator/boardsupport.c" 1
-	li a0, 0
-# 0 "" 2
- #NO_APP
 	li	a0,1
+	sw	ra,28(sp)
 	call	benchmark_body.isra.0
-	call	start_trigger
 	call	benchmark
 	sw	zero,12(sp)
-	call	stop_trigger
 	lw	a0,12(sp)
 	call	verify_benchmark
 	lw	ra,28(sp)

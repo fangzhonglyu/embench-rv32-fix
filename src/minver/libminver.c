@@ -56,7 +56,6 @@
 */
 
 #include <math.h>
-#include <string.h>
 #include "support.h"
 
 #include "libc.c"

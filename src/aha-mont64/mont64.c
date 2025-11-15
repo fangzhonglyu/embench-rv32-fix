@@ -27,9 +27,6 @@ are unsigned numbers with a, b < m < 2**64, and m odd. The code does
 some 128-bit arithmetic.
    The variable r is fixed at 2**64, and its log base 2 at 64.
    Works with gcc on Windows and Linux. */
-
-#include <stdlib.h>
-#include <stdio.h>
 #include <stdint.h>
 
 typedef uint64_t uint64;

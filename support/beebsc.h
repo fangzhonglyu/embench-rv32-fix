@@ -45,15 +45,15 @@
 
 /* Local simplified versions of library functions */
 
-int rand_beebs (void);
-void srand_beebs (unsigned int new_seed);
+static int rand_beebs (void);
+static void srand_beebs (unsigned int new_seed);
 
-void init_heap_beebs (void *heap, const size_t heap_size);
-int check_heap_beebs (void *heap);
-void *malloc_beebs (size_t size);
-void *calloc_beebs (size_t nmemb, size_t size);
-void *realloc_beebs (void *ptr, size_t size);
-void free_beebs (void *ptr);
+static void init_heap_beebs (void *heap, const size_t heap_size);
+static int check_heap_beebs (void *heap);
+static void *malloc_beebs (size_t size);
+static void *calloc_beebs (size_t nmemb, size_t size);
+static void *realloc_beebs (void *ptr, size_t size);
+static void free_beebs (void *ptr);
 #endif /* BEEBSC_H */
 
 

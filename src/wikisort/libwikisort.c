@@ -14,7 +14,6 @@
    Originally from https://github.com/BonzaiThePenguin/WikiSort and placed
    into public domain. */
 
-#include <string.h>
 #include "support.h"
 
 
@@ -28,8 +27,6 @@
    benchmarks. */
 #define LOCAL_SCALE_FACTOR 1
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
 #include <stdarg.h>
 // #include <string.h>

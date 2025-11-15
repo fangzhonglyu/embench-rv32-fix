@@ -33,7 +33,6 @@
  * Thomas Lundqvist at Chalmers.
  *----------------------------------------------------------------------*/
 
-#include <string.h>
 #include "support.h"
 
 #include "libc.c"

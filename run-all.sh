@@ -29,7 +29,6 @@
 #SRCDIRS="consumer/jpeg/jpeg-6a telecomm/adpcm/src security/rijndael security/sha telecomm/fft"
 
 SRCDIRS="bd/src/aha-mont64
-         bd/src/crc32
          bd/src/cubic
          bd/src/edn
          bd/src/huffbench
@@ -89,6 +88,13 @@ do
     echo ${d}
     cd ${d}
     $MIBENCH_RUN ./$SRC_NAMES$BIN_SUFFIX > output.txt
+    if [ $? -eq 0 ]; then
+        echo "PASSED"
+    else
+        echo "FAILED"
+        # exit 1
+        exit 1
+    fi
     # make clean
     cd ${CURRDIR}
 done

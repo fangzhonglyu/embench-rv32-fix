@@ -22,8 +22,6 @@
    benchmarks. */
 #define LOCAL_SCALE_FACTOR 170
 
-#include <stdlib.h>
-
 #ifdef __TURBOC__
 #pragma warn -cln
 #endif
